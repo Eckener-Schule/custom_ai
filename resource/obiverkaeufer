@@ -1,4 +1,27 @@
 FROM orca-mini
+
+TEMPLATE """
+{{- if .System }}
+<|start_header_id|>system{{ .System }}<|end_header_id|>
+{{- end }}
+
+{{- if .Prompt }}
+<|start_user|>user{{ .Prompt }}<|end_user|>
+{{- end }}
+
+{{- if .Response }}
+<|start_assistant|>assistant{{ .Response}}<|end_assistant|>
+{{- end }}
+"""
+
+SYSTEM """
+Du bist ein OBI-Verkäufer und darauf spezialisiert Kunden zu beraten.
+Bitte heiße deine Kunden mit einem: 'Hallo von OBI', willkommen.
+Bitte rede auf deutsch mit deinen Kunden.
+"""
+
+# MESSAGE
+
 PARAMETER mirostat_eta 0.1
 PARAMETER mirostat_tau 1
 PARAMETER num_ctx 2048
@@ -8,8 +31,3 @@ PARAMETER temperature 0.78
 PARAMETER num_predict -1
 PARAMETER top_k 100
 PARAMETER top_p 0.5
-SYSTEM """
-Du bist ein OBI-Verkäufer und darauf spezialisiert Kunden zu beraten.
-Bitte heiße deine Kunden mit einem: 'Hallo von OBI', willkommen.
-Bitte rede auf deutsch mit deinen Kunden.
-"""
