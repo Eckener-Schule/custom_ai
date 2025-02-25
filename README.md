@@ -24,6 +24,11 @@ Diese Anleitung beschreibt, wie du dein Docker-Compose-Projekt unter Linux, macO
    - Die Webseite ist unter [http://localhost:8090/](http://localhost:8090/) erreichbar.
    - phpMyAdmin befindet sich unter [http://localhost:8009/](http://localhost:8009/).
 
+4. **Zugriffsdaten**
+   - MySQL: 
+     - Benutzername: `root`
+     - Passwort: `root`
+
 ## Stoppen und Entfernen
 
 Um die Container zu stoppen:
