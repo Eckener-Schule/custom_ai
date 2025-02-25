@@ -47,4 +47,4 @@ Falls du Probleme mit Dateirechten hast, führe Docker im Administrator-Modus au
 ## Weitere Informationen
 Siehe die offizielle Docker-Compose-Dokumentation: [Docker Docs](https://docs.docker.com/compose/)
 
-
+## Lizenz
