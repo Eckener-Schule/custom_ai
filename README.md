@@ -25,10 +25,18 @@ Diese Anleitung beschreibt, wie du dein Docker-Compose-Projekt unter Linux, macO
    - phpMyAdmin befindet sich unter [http://localhost:8009/](http://localhost:8009/).
 
 4. **Zugriffsdaten**
-   - MySQL: 
+   - PhpMyAdmin: 
+     - Benutzername: `root`
+     - Passwort: `example`
+
+5. **WordPress-Installation**
+   - Öffne die Webseite [http://localhost:8090/](http://localhost:8090/) und folge den Anweisungen zur WordPress-Installation.
+   - Verwende die folgenden Zugangsdaten:
      - Benutzername: `root`
      - Passwort: `root`
-
+6. **MVC-Beispiel**
+    - Unter [Wordpress/wp-content/themes/my-theme/mvc]
+    - Hier befindet sich ein einfaches MVC-Beispiel, welches die Datenbank nutzt. Denkt datan, dass ihr auch das richtige Theme in Wordpress auswählt.
 ## Stoppen und Entfernen
 
 Um die Container zu stoppen:
