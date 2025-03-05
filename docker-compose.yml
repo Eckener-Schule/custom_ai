@@ -1,49 +1,47 @@
-services:
+version: '3.7'
 
-  php:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: browser
-    image: browser:latest
-    ports:
-      - "8090:80"
-    volumes:
-      - ./src:/var/www/html/src  # Mountet den src/ Ordner
-      - ./public:/var/www/html/public  # Mountet den public/ Ordner für Apache
-      - ./apache-custom.conf:/etc/apache2/sites-available/000-default.conf  # Apache-Konfigurationsdatei einbinden
+services:
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
     restart: always
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: example
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./wordpress/wp-content:/var/www/html/wp-content
     depends_on:
-      - db
-    links:
       - db
 
   db:
-    image: mysql:latest
+    image: mysql:5.7
     container_name: db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_DATABASE: "meinprojekt"
-      MYSQL_USER: "user"
-      MYSQL_PASSWORD: "password"
-    ports:
-      - "3306:3306"
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: wordpress
     volumes:
       - db_data:/var/lib/mysql
 
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
     restart: always
-    depends_on:
-      - db
     ports:
-      - "8009:80"
+      - "8081:80"
     environment:
       PMA_HOST: db
       PMA_USER: root
-      PMA_PASSWORD: root
+      PMA_PASSWORD: example
+    depends_on:
+      - db
 
 volumes:
+  wordpress_data:
   db_data:
 
