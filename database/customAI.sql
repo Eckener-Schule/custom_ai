@@ -1,15 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Feb 27, 2025 at 10:45 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: db
+-- Generation Time: Mar 06, 2025 at 08:50 AM
+-- Server version: 5.7.44
+-- PHP Version: 8.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "+01:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 --
 -- Database: `customAI`
 --
+DROP DATABASE IF EXISTS `customAI`;
+CREATE DATABASE IF NOT EXISTS `customAI` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `customAI`;
 
 -- --------------------------------------------------------
 
@@ -27,13 +30,18 @@ SET time_zone = "+00:00";
 -- Table structure for table `Chatbot`
 --
 
-CREATE TABLE `Chatbot` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `Chatbot`;
+CREATE TABLE IF NOT EXISTS `Chatbot` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
   `companyID` int(11) NOT NULL,
-  `promptID` int(11) DEFAULT NULL,
-  `websiteOwnerID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `promptID` int(11) NOT NULL,
+  `websiteOwnerID` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `companyID` (`companyID`),
+  KEY `promptID` (`promptID`),
+  KEY `websiteOwnerID` (`websiteOwnerID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -41,11 +49,13 @@ CREATE TABLE `Chatbot` (
 -- Table structure for table `Company`
 --
 
-CREATE TABLE `Company` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `Company`;
+CREATE TABLE IF NOT EXISTS `Company` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
-  `website` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `website` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -53,10 +63,12 @@ CREATE TABLE `Company` (
 -- Table structure for table `Prompt`
 --
 
-CREATE TABLE `Prompt` (
-  `id` int(11) NOT NULL,
-  `prompt` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+DROP TABLE IF EXISTS `Prompt`;
+CREATE TABLE IF NOT EXISTS `Prompt` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `prompt` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -64,67 +76,25 @@ CREATE TABLE `Prompt` (
 -- Table structure for table `WebsiteOwner`
 --
 
-CREATE TABLE `WebsiteOwner` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `WebsiteOwner`;
+CREATE TABLE IF NOT EXISTS `WebsiteOwner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `firstName` varchar(30) NOT NULL,
-  `lastName` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `lastName` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Indexes for dumped tables
+-- Constraints for dumped tables
 --
 
 --
--- Indexes for table `Chatbot`
+-- Constraints for table `Chatbot`
 --
 ALTER TABLE `Chatbot`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `Company`
---
-ALTER TABLE `Company`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `Prompt`
---
-ALTER TABLE `Prompt`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `WebsiteOwner`
---
-ALTER TABLE `WebsiteOwner`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `Chatbot`
---
-ALTER TABLE `Chatbot`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `Company`
---
-ALTER TABLE `Company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `Prompt`
---
-ALTER TABLE `Prompt`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `WebsiteOwner`
---
-ALTER TABLE `WebsiteOwner`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  ADD CONSTRAINT `companyID` FOREIGN KEY (`companyID`) REFERENCES `Company` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `promptID` FOREIGN KEY (`promptID`) REFERENCES `Prompt` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `websiteOwnerID` FOREIGN KEY (`websiteOwnerID`) REFERENCES `WebsiteOwner` (`id`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
