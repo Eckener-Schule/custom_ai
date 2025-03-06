@@ -1,27 +1,47 @@
+version: '3.7'
 
 services:
-
-  php:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: browser
-    image: browser:latest
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    restart: always
     ports:
-      - 8090:80
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: example
     volumes:
-      - ./src:/var/www/html/
+      - wordpress_data:/var/www/html
+      - ./wordpress/wp-content:/var/www/html/wp-content
+    depends_on:
+      - db
+
   db:
-    image: mysql:latest
+    image: mysql:5.7
     container_name: db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: wordpress
+    volumes:
+      - db_data:/var/lib/mysql
 
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
     restart: always
     ports:
-      - 8009:80
+      - "8081:80"
     environment:
-      - PMA_ARBITARY=1
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: example
+    depends_on:
+      - db
+
+volumes:
+  wordpress_data:
+  db_data:
+
