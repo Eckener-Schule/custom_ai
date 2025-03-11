@@ -1,6 +1,9 @@
 <?php
 
-namespace model;
+namespace models;
+
+use database\Database;
+use PDO;
 
 class Company
 {
@@ -48,5 +51,19 @@ class Company
     public function setWebsite(string $website): void
     {
         $this->website = $website;
+    }
+
+    public static function find(int $id): ?Company
+    {
+        $stmt = Database::getInstance()->prepare("
+            SELECT id, name, website
+            FROM Company
+            WHERE id = :id
+        ");
+
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? new Company($result['id'], $result['name'], $result['website']) : null;
     }
 }

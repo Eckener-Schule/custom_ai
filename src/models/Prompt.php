@@ -1,6 +1,10 @@
 <?php
 
-namespace model;
+namespace models;
+
+use database\Database;
+use PDO;
+
 class Prompt
 {
     private int $id;
@@ -34,5 +38,19 @@ class Prompt
     public function setPrompt(string $prompt): void
     {
         $this->prompt = $prompt;
+    }
+
+    public static function find(int $id): ?Prompt
+    {
+        $stmt = Database::getInstance()->prepare("
+            SELECT id, prompt
+            FROM Prompt
+            WHERE id = :id
+        ");
+
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? new Prompt($result['id'], $result['prompt']) : null;
     }
 }
