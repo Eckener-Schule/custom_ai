@@ -1,6 +1,9 @@
 <?php
 
-namespace model;
+namespace models;
+
+use database\Database;
+use PDO;
 
 class WebsiteOwner
 {
@@ -48,5 +51,19 @@ class WebsiteOwner
     public function setLastName(string $lastName): void
     {
         $this->lastName = $lastName;
+    }
+
+    public static function find(int $id): ?WebsiteOwner
+    {
+        $stmt = Database::getInstance()->prepare("
+            SELECT id, fristName, lastName
+            FROM WebsiteOwner
+            WHERE id = :id
+        ");
+
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? new WebsiteOwner($result['id'], $result['fristName'], $result['lastName']) : null;
     }
 }

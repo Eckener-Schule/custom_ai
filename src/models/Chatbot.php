@@ -1,6 +1,9 @@
 <?php
 
-namespace model;
+namespace models;
+
+use database\Database;
+use PDO;
 
 class Chatbot
 {
@@ -74,5 +77,19 @@ class Chatbot
     public function setWebsiteOwnerID(int $websiteOwnerID): void
     {
         $this->websiteOwnerID = $websiteOwnerID;
+    }
+
+    public static function find(int $id): ?Chatbot
+    {
+        $stmt = Database::getInstance()->prepare("
+            SELECT id, name, companyID, promptID, websiteOwnerID 
+            FROM Chatbot
+            WHERE id = :id
+        ");
+
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? new Chatbot($result['id'], $result['name'], $result['companyID'], $result['promptID'], $result['websiteOwnerID']) : null;
     }
 }
